@@ -12,9 +12,17 @@ public class MyDownloadService extends Service {
     public MyDownloadService() {
     }
 
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "onCreate: called");
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         //null will saying that this is startetService
+        Log.d(TAG, "onBind: called");
        return null;
     }
 
@@ -22,8 +30,16 @@ public class MyDownloadService extends Service {
 // intent from main activity will be recieve here
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "onStartCommand: called");
         String songName = intent.getStringExtra(MainActivity.MESSAGE_KEY);
-        downloadSong(songName);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                downloadSong(songName);
+            }
+        });
+        thread.start();
+
         return START_REDELIVER_INTENT;
     }
 
@@ -35,5 +51,11 @@ public class MyDownloadService extends Service {
             e.printStackTrace();
         }
         Log.d(TAG, "downloadSong: "+songName+"downloaded");
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy: called");
+        super.onDestroy();
     }
 }

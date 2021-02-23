@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import com.azeiee.servicesinandroid.services.MyDownloadService;
 
+/**
+ * we will create a thre in MyDownloaService onStartCommand method
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MyTag";
@@ -50,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clearOutput(View v) {
+
+        Intent intent = new Intent(MainActivity.this, MyDownloadService.class);
+        stopService(intent);
         mLog.setText("");
         scrollTextToEnd();
     }
